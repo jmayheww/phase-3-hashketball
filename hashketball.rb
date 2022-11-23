@@ -1,12 +1,13 @@
+require 'pry'
 # Write your code below game_hash
 def game_hash
   {
     home: {
-      team_name: "Brooklyn Nets",
-      colors: ["Black", "White"],
+      team_name: 'Brooklyn Nets',
+      colors: %w[Black White],
       players: [
         {
-          player_name: "Alan Anderson",
+          player_name: 'Alan Anderson',
           number: 0,
           shoe: 16,
           points: 22,
@@ -17,7 +18,7 @@ def game_hash
           slam_dunks: 1
         },
         {
-          player_name: "Reggie Evans",
+          player_name: 'Reggie Evans',
           number: 30,
           shoe: 14,
           points: 12,
@@ -28,7 +29,7 @@ def game_hash
           slam_dunks: 7
         },
         {
-          player_name: "Brook Lopez",
+          player_name: 'Brook Lopez',
           number: 11,
           shoe: 17,
           points: 17,
@@ -39,7 +40,7 @@ def game_hash
           slam_dunks: 15
         },
         {
-          player_name: "Mason Plumlee",
+          player_name: 'Mason Plumlee',
           number: 1,
           shoe: 19,
           points: 26,
@@ -50,7 +51,7 @@ def game_hash
           slam_dunks: 5
         },
         {
-          player_name: "Jason Terry",
+          player_name: 'Jason Terry',
           number: 31,
           shoe: 15,
           points: 19,
@@ -63,11 +64,11 @@ def game_hash
       ]
     },
     away: {
-      team_name: "Charlotte Hornets",
-      colors: ["Turquoise", "Purple"],
+      team_name: 'Charlotte Hornets',
+      colors: %w[Turquoise Purple],
       players: [
         {
-          player_name: "Jeff Adrien",
+          player_name: 'Jeff Adrien',
           number: 4,
           shoe: 18,
           points: 10,
@@ -78,7 +79,7 @@ def game_hash
           slam_dunks: 2
         },
         {
-          player_name: "Bismack Biyombo",
+          player_name: 'Bismack Biyombo',
           number: 0,
           shoe: 16,
           points: 12,
@@ -89,7 +90,7 @@ def game_hash
           slam_dunks: 10
         },
         {
-          player_name: "DeSagna Diop",
+          player_name: 'DeSagna Diop',
           number: 2,
           shoe: 14,
           points: 24,
@@ -100,7 +101,7 @@ def game_hash
           slam_dunks: 5
         },
         {
-          player_name: "Ben Gordon",
+          player_name: 'Ben Gordon',
           number: 8,
           shoe: 15,
           points: 33,
@@ -111,7 +112,7 @@ def game_hash
           slam_dunks: 0
         },
         {
-          player_name: "Kemba Walker",
+          player_name: 'Kemba Walker',
           number: 33,
           shoe: 15,
           points: 6,
@@ -126,4 +127,57 @@ def game_hash
   }
 end
 
-# Write code here
+def get_player(name)
+  game_hash.values.each do |team|
+    team[:players].each do |player|
+      return player if player[:player_name] == name
+    end
+  end
+end
+
+def num_points_scored(name)
+  get_player(name)[:points]
+end
+
+def shoe_size(name)
+  get_player(name)[:shoe]
+end
+
+def team_colors(name_of_team)
+  game_hash.values.each do |team|
+    return team[:colors] if team[:team_name] == name_of_team
+  end
+end
+
+def team_names
+  game_hash.values.map { |team| team[:team_name] }
+end
+
+def player_numbers(name_of_team)
+  game_hash.values.each do |team|
+    return team[:players].map { |player| player[:number] } if team[:team_name] == name_of_team
+  end
+end
+
+def player_stats(player_name)
+  get_player(player_name)
+end
+
+def big_shoe_rebounds
+  game_hash.values.find do |team|
+    return team[:players].max { |player_a, player_b| player_a[:shoe] <=> player_b[:shoe] }[:rebounds]
+  end
+end
+
+def most_points_scored
+  game_hash.values.find do |team|
+    team[:players].max { |player_a, player_b| player_a[:points] <=> player_b[:points] }
+  end
+end
+
+def winning_team
+  game_hash.values.find do |team|
+    binding.pry
+    team[:team_name].max { |team_a, team_b| team_a[:players][:points] <=> team_b[:players][:points] }
+  end
+end
